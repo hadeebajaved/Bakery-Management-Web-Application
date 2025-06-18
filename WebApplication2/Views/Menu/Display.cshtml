@@ -1,0 +1,209 @@
+﻿@* @model IEnumerable<WebApplication2.ModelsEAD.Cake>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Frosted Dreams - Menu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Card hover effect */
+        .card {
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+            .card:hover {
+                transform: scale(1.1);
+            }
+
+        /* Card styling */
+        .card-body {
+            text-align: center;
+        }
+
+        /* Custom button styles */
+        .btn-add-to-cart {
+            background-color: #C6B3D6; /* Custom color (adjust as needed) */
+            color: white;
+            font-size: 14px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Make it fill the available width */
+            max-width: 150px; /* Limit width of the button */
+            margin: 0 auto; /* Center the button */
+
+
+        }
+
+            .btn-add-to-cart:hover {
+                background-color: mediumpurple; /* Darker shade for hover */
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Menu</h2>
+
+        <div class="row">
+            @foreach (var cake in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(cake.Image)" class="card-img-top" alt="@cake.Name" />
+                        <div class="card-body">
+                            <h5 class="card-title">@cake.Name</h5>
+                            <p class="card-text">@cake.Description</p>
+                            <p class="card-text"><strong>Price: </strong>@cake.Price.ToString("C")</p>
+
+                            <!-- Add to cart button -->
+                            <button class="btn-add-to-cart" onclick="addToCart('@cake.Id', '@cake.Name', '@cake.Price') ">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // // Function to add the item to the cart (for now, it will just log to the console)
+        // function addToCart(cakeId, cakeName, cakePrice) {
+        //     console.log("Added to cart:", cakeName, "Price:", cakePrice);
+
+        //     // You can use AJAX or a form submission to send this data to your server and add the cake to the cart
+        //     // Example: Send data to controller to handle cart addition
+        // }
+
+        function addToCart(cakeId, cakeName, cakePrice) {
+            console.log("Adding to cart:", cakeName, cakePrice);
+
+            // Create a new cart item
+            const newItem = { cakeId, cakeName, cakePrice, quantity: 1 };
+
+            // Get the current cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Check if the item already exists in the cart
+            const existingItem = cart.find(item => item.cakeId === cakeId);
+            if (existingItem) {
+                // If the item already exists, increase its quantity
+                existingItem.quantity++;
+            } else {
+                // Otherwise, add the new item to the cart
+                cart.push(newItem);
+            }
+
+            // Save the updated cart back to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Show success message
+            alert(`${cakeName} has been successfully added to your cart!`);
+
+            // Update cart icon
+            updateCartIcon();
+        }
+
+        // Function to update the cart icon with the number of items
+        function updateCartIcon() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = cartCount; // Update cart icon count
+        }
+
+        // On page load, update the cart icon with the correct count
+        window.onload = function() {
+            updateCartIcon();
+        };
+    </script>
+
+</body>
+</html>
+ *@
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<WebApplication2.ModelsEAD.Cake>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <style>
+        .cake-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .cake-card:hover {
+                transform: scale(1.05); /* Card grows slightly */
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
+            .cake-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .cake-card .card-body {
+                text-align: center;
+                padding: 15px;
+            }
+
+            .cake-card h5 {
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .cake-card p {
+                font-size: 14px;
+                color: #555;
+            }
+
+        .add-to-cart-btn {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Our Cakes</h1>
+        <div class="row">
+            @foreach (var cake in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(cake.Image)" class="card-img-top" alt="@cake.Name" />
+                        <div class="card-body">
+                            <h5 class="card-title">@cake.Name</h5>
+                            <p class="card-text">@cake.Description</p>
+                            <p class="card-text"><strong>Price: </strong>@cake.Price.ToString("C")</p>
+
+                            <!-- Add to cart button -->
+                            <button class="btn-add-to-cart" onclick="addToCart('@cake.Id', '@cake.Name', '@cake.Price') ">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

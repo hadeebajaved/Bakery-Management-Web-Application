@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model WebApplication2.ModelsEAD.Signup
+
+<h2>Your Profile</h2>
+
+<div>
+    <p><strong>Name:</strong> @Model.Name</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Password:</strong> @Model.Password</p>
+
+    <a href="@Url.Action("EditProfile", "Login")" class="btn btn-warning">Edit Profile</a>
+    <a href="@Url.Action("Logout", "Login")" class="btn btn-danger">Logout</a>
+</div>

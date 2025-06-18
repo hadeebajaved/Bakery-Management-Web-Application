@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Add Cake";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add a New Cake</h2>
+    <div class="card shadow p-4">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        <!-- Correcting the form action to post to the Add action -->
+        <form action="@Url.Action("Add", "Menu")" method="post" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label for="Name" class="form-label">Cake Name</label>
+                <input type="text" class="form-control" id="Name" name="name" placeholder="Enter cake name" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="Price" name="price" placeholder="Enter price" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <textarea class="form-control" id="Description" name="description" rows="4" placeholder="Describe the cake"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Image" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" id="Image" name="image" accept="image/*" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Quantity" class="form-label">Quantity</label>
+                <input type="text" class="form-control" id="Quantity" name="quantity" placeholder="Enter quantity (e.g., 1 Kg, 500g)" />
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Add Cake</button>
+                <a href="@Url.Action("Index", "Menu")" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

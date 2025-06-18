@@ -1,0 +1,183 @@
+﻿@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <style>
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+            .cart-item-info h5 {
+                margin: 0;
+            }
+
+        .cart-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            /* Set all buttons color to #007bff */
+            .cart-item-actions button {
+                margin: 0 5px;
+                background-color: #007bff; /* Set button color to #007bff */
+                color: white;
+                border: none;
+            }
+
+                /* Hover color for buttons */
+                .cart-item-actions button:hover {
+                    background-color: mediumpurple; /* Hover color */
+                }
+
+        #cartSummary {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        /* Set color for Clear Cart and Proceed Checkout buttons */
+        .btn-clear-cart, .btn-proceed-checkout {
+            width: 100%;
+            max-width: 150px;
+            margin: 20px auto 0;
+            background-color: #007bff; /* Set button color to #007bff */
+            color: white;
+            border: none;
+        }
+
+            /* Hover color for these buttons */
+            .btn-clear-cart:hover, .btn-proceed-checkout:hover {
+                background-color: mediumpurple; /* Hover color */
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container my-5">
+        <h1>Your Cart</h1>
+
+        <div id="cartItems">
+            <!-- Cart items will be displayed here -->
+        </div>
+
+        <div id="cartSummary">
+            <h4>Total: $<span id="totalPrice">0.00</span></h4>
+            <a href="/Menu/Bill" class="btn btn-proceed-checkout">Generate Bill</a>
+        </div>
+
+        <div id="emptyCartMessage" class="alert alert-warning" style="display:none;">
+            Your cart is empty, so the bill cannot be generated.
+        </div>
+
+        <!-- Clear Cart Button -->
+        <button class="btn btn-primary btn-clear-cart" onclick="clearCart()">Clear Cart</button>
+    </div>
+
+    <script>
+        // Retrieve the cart from local storage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const totalPriceElement = document.getElementById('totalPrice');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+
+            // Clear the cart items container
+            cartItemsContainer.innerHTML = "";
+
+            let totalPrice = 0;
+
+            // If the cart is empty, show the message and hide the cart items
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = "block";
+                return;
+            } else {
+                emptyCartMessage.style.display = "none";
+            }
+
+            // Loop through cart and display items
+            cart.forEach(item => {
+                const itemRow = document.createElement('div');
+                itemRow.classList.add('cart-item');
+                itemRow.setAttribute('data-id', item.cakeId);
+
+                itemRow.innerHTML = `
+                                    <div class="cart-item-info">
+                                        <h5>${item.name}</h5>
+                                        <p>Price: $${item.price}</p>
+                                    </div>
+                                    <div class="cart-item-actions">
+                                        <button class="btn btn-proceed-checkout" onclick="decreaseQuantity('${item.cakeId}')">-</button>
+                                        <span>Quantity: ${item.quantity}</span>
+                                                <button class="btn btn-proceed-checkout" onclick="increaseQuantity('${item.cakeId}')">+</button>
+                                                <button class="btn btn-proceed-checkout" onclick="removeItem('${item.cakeId}')">Remove</button>
+                                        <p>Total: $${(item.price * item.quantity).toFixed(2)}</p>
+                                    </div>
+                                `;
+                cartItemsContainer.appendChild(itemRow);
+
+                totalPrice += item.price * item.quantity;
+            });
+
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+        }
+
+        function increaseQuantity(cakeId) {
+            const item = cart.find(item => item.cakeId === cakeId);
+            if (item) {
+                item.quantity++;
+                saveCart();
+                renderCart();
+            }
+        }
+
+        function decreaseQuantity(cakeId) {
+            const item = cart.find(item => item.cakeId === cakeId);
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                saveCart();
+                renderCart();
+            } else {
+                alert("Quantity cannot be less than 1");
+            }
+        }
+
+        function removeItem(cakeId) {
+            cart = cart.filter(item => item.cakeId !== cakeId);
+            saveCart();
+            renderCart();
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function clearCart() {
+            if (confirm("Are you sure you want to clear the entire cart?")) {
+                localStorage.removeItem('cart');
+                cart = [];
+                renderCart();
+                alert("Your cart has been cleared.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCart);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

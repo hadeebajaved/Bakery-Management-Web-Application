@@ -1,0 +1,142 @@
+﻿@model IEnumerable<WebApplication2.ModelsEAD.Cake>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Frosted Dreams - Menu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Card hover effect */
+        .card {
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+            .card:hover {
+                transform: scale(1.1);
+            }
+
+        /* Card styling */
+        .card-body {
+            text-align: center;
+        }
+
+        /* Custom button styles */
+        .btn-add-to-cart {
+            background-color: #C6B3D6; /* Custom color (adjust as needed) */
+            color: white;
+            font-size: 14px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Make it fill the available width */
+            max-width: 150px; /* Limit width of the button */
+            margin: 0 auto; /* Center the button */
+        }
+
+            .btn-add-to-cart:hover {
+                background-color: mediumpurple; /* Darker shade for hover */
+            }
+
+        /* Cart icon styling */
+        #cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #C6B3D6;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #cart-count {
+            font-size: 14px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Menu</h2>
+
+        <div class="row">
+            @foreach (var cake in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(cake.Image)" class="card-img-top" alt="@cake.Name" />
+                        <div class="card-body">
+                            <h5 class="card-title">@cake.Name</h5>
+                            <p class="card-text">@cake.Description</p>
+                            <p class="card-text"><strong>Price: </strong>@cake.Price.ToString("C")</p>
+
+                            <!-- Add to cart button -->
+                            <button class="btn-add-to-cart" onclick="addToCart('@cake.Id', '@cake.Name', '@cake.Price') ">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to add the item to the cart
+        function addToCart(cakeId, name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Check if item is already in cart
+            let item = cart.find(item => item.cakeId === cakeId);
+
+            if (item) {
+                // If item already exists, just update the quantity
+                item.quantity++;
+            } else {
+                // If it's a new item, create a new object and add it to the cart
+                cart.push({
+                    cakeId: cakeId,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            // Save updated cart
+            localStorage.setItem('cart', JSON.stringify(cart));
+            // Show success message
+            alert(`${name} has been successfully added to your cart!`);
+
+            // Update cart icon
+            updateCartIcon();
+        }
+
+        // Function to update the cart icon with the number of items
+        function updateCartIcon() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = cartCount; // Update cart icon count
+        }
+
+        // On page load, update the cart icon with the correct count
+        window.onload = function () {
+            updateCartIcon();
+        };
+    </script>
+
+</body>
+</html>

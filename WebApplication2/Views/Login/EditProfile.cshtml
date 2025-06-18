@@ -1,0 +1,24 @@
+﻿@model WebApplication2.ModelsEAD.Signup
+
+<h2>Edit Your Profile</h2>
+
+<div>
+    <form method="post" action="@Url.Action("UpdateProfile", "Login")">
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" />
+        </div>
+
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="Password" name="Password" value="@Model.Password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>

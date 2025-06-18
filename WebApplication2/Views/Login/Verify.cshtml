@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Login";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Frosted Dreams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/mysite.css/">
+    <link rel="stylesheet" href="~/js/site.js">
+    <!-- Add Bootstrap for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <header>
+    </header>
+
+    <main>
+        <div class="verify-container">
+            <div class="login-form">
+                <!-- Login Header -->
+                <div class="login-header text-center">
+
+                    <div class="forgot-password-container">
+                        <div class="forgot-password-form">
+                            <div class="forgot-password-header text-center">
+                                <br /><h2>Forgot Your Password?</h2>
+                                <br /> <p>Enter your email to check if it exists in our database.</p>
+                            </div>
+
+                        </div>
+
+                        <!-- Login Form -->
+                        <form method="post" action="/Login/verify2">
+
+                            <div class="form-group">
+                                <label for="email" style="text-align:left;">Email</label><br />
+                                <br />
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your Email" required /><br />
+                            </div>
+                            <br /><button type="submit" class="btn btn-primary">Verify</button>
+
+                        </form>
+
+                        <!-- Footer Text with Link -->
+                        <div class="footer-text text-center">
+                            <br />
+                            <p>Remembered your password? <a href="/Login/login"> Login</a></p>
+                        </div>
+                    </div>
+                </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+### ASP.NET Core ###
+# Build outputs
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vspscc
+*.vssscc
+
+# Rider IDE
+.idea/
+*.sln.iml
+
+# Build results
+*.DLL
+*.exe
+*.pdb
+*.dll.config
+*.cache
+*.resources
+
+# NuGet
+.nuget/
+packages/
+*.nupkg
+
+# Frontend libraries (can be restored via LibMan)
+wwwroot/lib/
+
+# User-specific files
+*.rsuser
+*.userprefs
+*.*~
+*.swp
+
+# OS generated files
+.DS_Store
+._*
+Thumbs.db
+
+# Local development settings
+appsettings.Development.json
+
+# Compiled files
+*.css
+*.js
+*.min.*
+*.map
+
+# Exclude but keep Bootstrap/jQuery licenses
+!wwwroot/lib/**/LICENSE*
+!wwwroot/lib/**/LICENSE.*
+!wwwroot/lib/**/license.*
+
+### SQL Server ###
+*.mdf
+*.ldf
+*.ndf
+
+### Visual Studio Code ###
+.history/
+*.code-workspace
